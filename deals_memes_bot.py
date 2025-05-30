@@ -25,6 +25,15 @@ AFFILIATE_LINKS = [
     ("Pet Brush Glove", "https://s.click.aliexpress.com/e/_mscBtzl", "https://i.imgur.com/bU8U3w5.jpg")
 ]
 
+# Product caption variants
+CAPTION_TEMPLATES = [
+    "🎁 {name}\n🔥 Just dropped on AliExpress → {link}\n#deals #musthave #shopping",
+    "🛒 {name}\nOnly here → {link}\n#viralfinds #coolgadgets",
+    "💡 Trending: {name}\nBuy now → {link}\n#funstuff #aliexpress",
+    "✨ You might need this → {name}\n{link}\n#ontrend #tiktokmademebuyit",
+    "😎 {name} is blowing up right now!\n👉 {link}\n#foryou #dailydeals"
+]
+
 # === Meme Fetcher ===
 def get_meme():
     url = "https://meme-api.com/gimme"
@@ -49,14 +58,15 @@ def post_to_telegram(caption, image_url):
 def post_daily():
     while True:
         if random.random() > 0.2:
-            # Meme mode (80% of the time)
+            # Meme mode (80%)
             title, meme_url = get_meme()
-            caption = f"{title}\n\n#memes #funny"
+            caption = f"😂 {title}\n\n#memes #relatable #funny #humor #lol #dailyvibes"
             post_to_telegram(caption, meme_url)
         else:
-            # Product mode (20% of the time)
+            # Product mode (20%)
             product, link, image = random.choice(AFFILIATE_LINKS)
-            caption = f"\U0001F525 {product}\nOnly on AliExpress → {link}\n#deals #shopping"
+            caption_template = random.choice(CAPTION_TEMPLATES)
+            caption = caption_template.format(name=product, link=link)
             post_to_telegram(caption, image)
 
         time.sleep(POST_INTERVAL_HOURS * 3600)
