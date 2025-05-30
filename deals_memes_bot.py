@@ -10,14 +10,19 @@ from flask import Flask
 # === CONFIG ===
 TG_BOT_TOKEN = os.getenv("TG_TOKEN")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID")
-POST_INTERVAL_HOURS = 0.1  # Post once per day
+POST_INTERVAL_HOURS = 0.01  # Post every ~36 seconds
 
 # Real affiliate links with product images
 AFFILIATE_LINKS = [
-    ("Creepy Cute Bunny Plush", "https://s.click.aliexpress.com/e/_mrbhqxz", "https://ae-pic-a1.aliexpress-media.com/kf/HTB18rK2aEuF3KVjSZK9q6zVtXXa5.jpg"),
-    ("Funny Cat Massager Toy", "https://s.click.aliexpress.com/e/_mPi5MI7", "https://ae01.alicdn.com/kf/HTB1lGl1a9zqK1RjSZFLq6An2XXaC.jpg"),
-    ("LED Star Projector", "https://s.click.aliexpress.com/e/_mrtzk9Z", "https://ae01.alicdn.com/kf/H6d153d3f4c2949c7bb0ed0171b3f59a9M.jpg"),
-    ("Mini Bag Sealer", "https://s.click.aliexpress.com/e/_mPS9JpH", "https://ae01.alicdn.com/kf/Hc1841e0b52a3437ca5c8ffcb80a1b5ed4.jpg")
+    ("Creepy Cute Bunny Plush", "https://s.click.aliexpress.com/e/_mrbhqxz"),
+    ("Funny Cat Massager Toy", "https://s.click.aliexpress.com/e/_mPi5MI7"),
+    ("LED Star Projector", "https://s.click.aliexpress.com/e/_mrtzk9Z"),
+    ("Mini Bag Sealer", "https://s.click.aliexpress.com/e/_mPS9JpH"),
+    ("USB Finger Massager", "https://s.click.aliexpress.com/e/_mq868sn"),
+    ("Cute Bear Humidifier", "https://s.click.aliexpress.com/e/_mOkX37p"),
+    ("Mini Hand Warmer", "https://s.click.aliexpress.com/e/_mLq4Qkn"),
+    ("Portable Juicer Cup", "https://s.click.aliexpress.com/e/_mtBaB8x"),
+    ("Pet Brush Glove", "https://s.click.aliexpress.com/e/_mscBtzl")
 ]
 
 # === Meme Fetcher ===
@@ -43,18 +48,16 @@ def post_to_telegram(caption, image_url):
 # === Posting Loop ===
 def post_daily():
     while True:
-        # Randomly choose to post a meme or a product
-        if random.choice([True, False]):
-            # Meme mode
+        if random.random() > 0.2:
+            # Meme mode (80% of the time)
             title, meme_url = get_meme()
             caption = f"{title}\n\n#memes #funny"
             post_to_telegram(caption, meme_url)
         else:
-            # Product mode
-            product, link, image = random.choice(AFFILIATE_LINKS)
+            # Product mode (20% of the time)
+            product, link = random.choice(AFFILIATE_LINKS)
             caption = f"🔥 {product}\nOnly on AliExpress → {link}\n#deals #shopping"
-            post_to_telegram(caption, image)
-
+            post_to_telegram(caption, "https://i.imgur.com/4M34hi2.jpg")  # Placeholder image
         time.sleep(POST_INTERVAL_HOURS * 3600)
 
 # === Flask App ===
