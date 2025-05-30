@@ -1,5 +1,3 @@
-# deals_memes_bot.py
-
 import os
 import random
 import threading
