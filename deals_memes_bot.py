@@ -57,7 +57,7 @@ def post_to_telegram(caption, image_url):
 # === Posting Loop ===
 def post_daily():
     while True:
-        if random.random() > 0.2:
+        if random.random() > 0.05:
             # Meme mode (80%)
             title, meme_url = get_meme()
             caption = f"😂 {title}\n\n#memes #relatable #funny #humor #lol #dailyvibes"
